@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HISTGAME</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            overflow: hidden;
+            position: relative;
+            background-color: #222;
+        }
+
+        .video-background-main, .video-background-form {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            object-fit: cover;
+            z-index: -1;
+        }
+
+        .title-container, .ww2-container, #quizForm, #results {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 80%;
+            max-width: 700px;
+        }
+
+        .title-container {
+            top: 30%;
+            padding: 20px;
+            background-color: rgba(0, 0, 0, 0.8);
+            border: 5px solid #aaa;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.8);
+            z-index: 1;
+        }
+
+        .ww2-container {
+            top: 55%;
+            padding: 15px;
+            background-color: rgba(50, 50, 50, 0.85);
+            border: 5px solid #666;
+            border-radius: 10px;
+            text-align: center;
+            cursor: pointer;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.8);
+            z-index: 1;
+        }
+
+        h1, h2 {
+            font-family: 'Playfair Display', serif;
+            letter-spacing: 2px;
+            margin: 0;
+            padding: 0;
+            display: inline;
+            line-height: 1;
+        }
+
+        h1 {
+            font-size: 72px;
+            color: #f0e6d6;
+            text-transform: uppercase;
+            text-shadow: 2px 2px 0 #333, 4px 4px 0 #000;
+        }
+
+        h2 {
+            font-size: 48px;
+            color: #ccc;
+            text-transform: uppercase;
+        }
+
+        #quizForm {
+            display: none;
+            padding: 20px;
+            background-color: #f5f5f5;
+            border-radius: 10px;
+            border: 3px solid #444;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.7);
+            text-align: left;
+            font-family: 'Press Start 2P', cursive;
+            position: relative;
+        }
+
+        .question {
+            margin-bottom: 20px;
+            padding: 15px;
+            border: 2px solid #444;
+            border-radius: 5px;
+            background-color: #e0e0e0;
+        }
+
+        .question-title {
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .question-options {
+            margin-top: 10px;
+        }
+
+        input[type="radio"] {
+            margin-right: 10px;
+            accent-color: #333;
+        }
+
+        .form-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+
+        .submit-btn, .back-to-home, .prev-btn {
+            background-color: #333;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            border-radius: 5px;
+            font-family: 'Press Start 2P', cursive;
+        }
+
+        .submit-btn:hover, .back-to-home:hover, .prev-btn:hover {
+            background-color: #222;
+        }
+
+        .back-to-home {
+            background-color: #444;
+        }
+
+        #errorMessage {
+            display: none;
+            color: #900;
+            font-family: 'Press Start 2P', cursive;
+            margin-top: 15px;
+            font-size: 14px;
+            text-align: center;
+        }
+
+        #results {
+            display: none;
+            padding: 20px;
+            background-color: #f5f5f5;
+            border-radius: 10px;
+            border: 3px solid #444;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.7);
+            text-align: left; 
+            font-family: 'Press Start 2P', cursive;
+            position: relative;
+            word-wrap: break-word; 
+        }
+
+        #results p {
+            margin: 0;
+            font-size: 18px;
+            line-height: 1.6;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .results-buttons {
+            margin-top: 20px;
+            display: flex;
+            justify-content: center; 
+        }
+    </style>
+</head>
+<body>
+    <video class="video-background-main" autoplay muted loop>
+        <source src="SGM-fondo.mp4" type="video/mp4">
+        Tu navegador no soporta el video.
+    </video>
+
+    <div class="title-container">
+        <h1 id="title">HISTGAME</h1>
+    </div>
+
+    <div class="ww2-container" onclick="showQuiz()">
+        <h2>Segunda Guerra Mundial</h2>
+    </div>
+
+    <form id="quizForm">
+        <div class="question" id="question1">
+            <p class="question-title">1. ¿En qué año comenzó la Segunda Guerra Mundial?</p>
+            <div class="question-options">
+                <label><input type="radio" name="q1" value="a"> a) 1939</label><br>
+                <label><input type="radio" name="q1" value="b"> b) 1941</label><br>
+                <label><input type="radio" name="q1" value="c"> c) 1945</label><br>
+            </div>
+        </div>
+
+        <div class="question" id="question2">
+            <p class="question-title">2. ¿Cuál fue el país que lideró el Eje en la Segunda Guerra Mundial?</p>
+            <div class="question-options">
+                <label><input type="radio" name="q2" value="a"> a) Francia</label><br>
+                <label><input type="radio" name="q2" value="b"> b) Alemania</label><br>
+                <label><input type="radio" name="q2" value="c"> c) Italia</label><br>
+            </div>
+        </div>
+
+        <div class="question" id="question3">
+            <p class="question-title">3. ¿Qué evento llevó a la entrada de Estados Unidos en la Segunda Guerra Mundial?</p>
+            <div class="question-options">
+                <label><input type="radio" name="q3" value="a"> a) La invasión de Polonia</label><br>
+                <label><input type="radio" name="q3" value="b"> b) El ataque a Pearl Harbor</label><br>
+                <label><input type="radio" name="q3" value="c"> c) La firma del Tratado de Versalles</label><br>
+            </div>
+        </div>
+
+        <div class="form-buttons">
+            <button type="button" class="back-to-home" onclick="goBack()">Volver al inicio</button>
+            <button type="button" class="prev-btn hidden" onclick="prevQuestion()">Pregunta anterior</button>
+            <button type="button" class="submit-btn" onclick="nextQuestion()">Siguiente pregunta</button>
+        </div>
+        <p id="errorMessage">Por favor, selecciona una opción para cada pregunta.</p>
+    </form>
+
+    <div id="results">
+        <p id="result"></p>
+        <div id="answersDetails"></div>
+        <div class="results-buttons">
+            <button class="back-to-home" onclick="goBack()">Volver al inicio</button>
+        </div>
+    </div>
+
+    <script>
+        let currentQuestion = 1;
+        let score = 0;
+        const answers = {
+            q1: 'a',
+            q2: 'b',
+            q3: 'b'
+        };
+
+        function showQuiz() {
+            document.querySelector('.title-container').style.display = 'none';
+            document.querySelector('.ww2-container').style.display = 'none';
+            document.getElementById('quizForm').style.display = 'block';
+            document.getElementById('results').style.display = 'none';
+            document.getElementById('errorMessage').style.display = 'none';
+            showCurrentQuestion();
+        }
+
+        function goBack() {
+            document.querySelector('.title-container').style.display = 'block';
+            document.querySelector('.ww2-container').style.display = 'block';
+            document.getElementById('quizForm').style.display = 'none';
+            document.getElementById('results').style.display = 'none';
+            document.getElementById('errorMessage').style.display = 'none';
+            resetQuiz();
+        }
+
+        function resetQuiz() {
+            currentQuestion = 1;
+            score = 0;
+            document.querySelectorAll('input[type="radio"]').forEach(input => input.checked = false);
+        }
+
+        function showCurrentQuestion() {
+            document.querySelectorAll('.question').forEach(q => q.style.display = 'none');
+            document.getElementById(`question${currentQuestion}`).style.display = 'block';
+            document.querySelector('.prev-btn').classList.toggle('hidden', currentQuestion === 1);
+            document.getElementById('errorMessage').style.display = 'none';
+        }
+
+        function nextQuestion() {
+            const currentAnswer = document.querySelector(`input[name=q${currentQuestion}]:checked`);
+
+            if (!currentAnswer) {
+                document.getElementById('errorMessage').style.display = 'block';
+                return;
+            }
+
+            currentQuestion++;
+            if (currentQuestion > 3) {
+                checkAnswers();
+            } else {
+                showCurrentQuestion();
+            }
+        }
+
+        function prevQuestion() {
+            if (currentQuestion > 1) {
+                currentQuestion--;
+                showCurrentQuestion();
+            }
+        }
+
+        function checkAnswers() {
+            score = 0;
+            let answersDetails = '';
+
+            for (let [key, value] of Object.entries(answers)) {
+                const selected = document.querySelector(`input[name=${key}]:checked`);
+                const questionTitle = document.querySelector(`#question${key.replace('q', '')} .question-title`).textContent;
+                const selectedOption = selected ? selected.value : 'No seleccionada';
+                const correctOption = value;
+
+                if (selected && selected.value === value) {
+                    score++;
+                }
+
+                const options = document.querySelectorAll(`#question${key.replace('q', '')} .question-options label`);
+                const optionsText = Array.from(options).map(option => option.textContent.trim()).join('<br>');
+
+                answersDetails += `<strong>Pregunta ${key.replace('q', '')}:</strong><br>${questionTitle}<br>${optionsText}<br>Opción seleccionada: ${selectedOption}<br>Opción correcta: ${correctOption}<br><br>`;
+            }
+
+            const result = document.getElementById('result');
+            result.innerHTML = `Acertaste ${score} de 3 preguntas.`;
+
+            document.getElementById('answersDetails').innerHTML = `<strong>Respuestas:</strong><br>${answersDetails}`;
+            document.getElementById('quizForm').style.display = 'none';
+            document.getElementById('results').style.display = 'block';
+        }
+    </script>
+</body>
+</html>
+
+
+
