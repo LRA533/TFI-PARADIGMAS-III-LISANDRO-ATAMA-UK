@@ -2,13 +2,13 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- Configura la vista para adaptarse a dispositivos móviles -->
     <title>HISTGAME</title>
-    <style>
+    <style> /*Busca fuentes de google*/
         @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&display=swap');
         @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
-
-        body {
+        /* Estilos globales para el cuerpo de la página */
+        body { 
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
@@ -18,7 +18,7 @@
             background-color: #222;
         }
 
-        .video-background-main, .video-background-form {
+        .video-background-main, .video-background-form { 
             position: fixed;
             top: 0;
             left: 0;
@@ -28,7 +28,7 @@
             z-index: -1;
         }
 
-        .title-container, .ww2-container, #quizForm, #results {
+        .title-container, .ww2-container, #quizForm, #results { 
             position: absolute;
             top: 50%;
             left: 50%;
@@ -182,19 +182,19 @@
     </style>
 </head>
 <body>
-    <video class="video-background-main" autoplay muted loop>
+    <video class="video-background-main" autoplay muted loop>  <!-- Video de fondo que se reproduce automáticamente, está en silencio y en bucle -->
         <source src="SGM-fondo.mp4" type="video/mp4">
         Tu navegador no soporta el video.
     </video>
-
+    <!-- Contenedor para el título principal -->
     <div class="title-container">
         <h1 id="title">HISTGAME</h1>
     </div>
-
+    <!-- Contenedor para la sección de la Segunda Guerra Mundial -->
     <div class="ww2-container" onclick="showQuiz()">
         <h2>Segunda Guerra Mundial</h2>
     </div>
-
+    <!-- Formulario del cuestionario -->
     <form id="quizForm">
         <div class="question" id="question1">
             <p class="question-title">1. ¿En qué año comenzó la Segunda Guerra Mundial?</p>
@@ -222,7 +222,7 @@
                 <label><input type="radio" name="q3" value="c"> c) La firma del Tratado de Versalles</label><br>
             </div>
         </div>
-
+        <!-- Botones de navegación del formulario -->
         <div class="form-buttons">
             <button type="button" class="back-to-home" onclick="goBack()">Volver al inicio</button>
             <button type="button" class="prev-btn hidden" onclick="prevQuestion()">Pregunta anterior</button>
@@ -230,7 +230,7 @@
         </div>
         <p id="errorMessage">Por favor, selecciona una opción para cada pregunta.</p>
     </form>
-
+    <!-- Contenedor para los resultados del cuestionario -->
     <div id="results">
         <p id="result"></p>
         <div id="answersDetails"></div>
@@ -241,14 +241,14 @@
 
     <script>
         let currentQuestion = 1;
-        let score = 0;
-        const answers = {
+        let score = 0; /* Puntaje del cuestionario */
+        const answers = { /* Respuestas correctas para las preguntas */
             q1: 'a',
             q2: 'b',
             q3: 'b'
         };
 
-        function showQuiz() {
+        function showQuiz() { /* Muestra el formulario del cuestionario y oculta el título y la sección de la Segunda Guerra Mundial */
             document.querySelector('.title-container').style.display = 'none';
             document.querySelector('.ww2-container').style.display = 'none';
             document.getElementById('quizForm').style.display = 'block';
@@ -257,7 +257,7 @@
             showCurrentQuestion();
         }
 
-        function goBack() {
+        function goBack() { /* Regresa a la vista inicial y oculta el formulario y los resultados del cuestionario */
             document.querySelector('.title-container').style.display = 'block';
             document.querySelector('.ww2-container').style.display = 'block';
             document.getElementById('quizForm').style.display = 'none';
@@ -266,13 +266,13 @@
             resetQuiz();
         }
 
-        function resetQuiz() {
+        function resetQuiz() { /* Reinicia el cuestionario a su estado inicial */
             currentQuestion = 1;
             score = 0;
             document.querySelectorAll('input[type="radio"]').forEach(input => input.checked = false);
         }
 
-        function showCurrentQuestion() {
+        function showCurrentQuestion() {  /* Muestra la pregunta actual y oculta las demás */
             document.querySelectorAll('.question').forEach(q => q.style.display = 'none');
             document.getElementById(`question${currentQuestion}`).style.display = 'block';
             document.querySelector('.prev-btn').classList.toggle('hidden', currentQuestion === 1);
@@ -281,7 +281,7 @@
 
         function nextQuestion() {
             const currentAnswer = document.querySelector(`input[name=q${currentQuestion}]:checked`);
-
+            /* Avanza a la siguiente pregunta, valida si se ha seleccionado una respuesta */
             if (!currentAnswer) {
                 document.getElementById('errorMessage').style.display = 'block';
                 return;
@@ -289,13 +289,13 @@
 
             currentQuestion++;
             if (currentQuestion > 3) {
-                checkAnswers();
+                checkAnswers(); /* Verifica las respuestas y muestra los resultados */
             } else {
-                showCurrentQuestion();
+                showCurrentQuestion(); /* Muestra la siguiente pregunta */
             }
         }
 
-        function prevQuestion() {
+        function prevQuestion() { /* Regresa a la pregunta anterior si no estamos en la primera pregunta */
             if (currentQuestion > 1) {
                 currentQuestion--;
                 showCurrentQuestion();
@@ -305,7 +305,7 @@
         function checkAnswers() {
             score = 0;
             let answersDetails = '';
-
+            /* Verifica las respuestas seleccionadas y muestra el puntaje */
             for (let [key, value] of Object.entries(answers)) {
                 const selected = document.querySelector(`input[name=${key}]:checked`);
                 const questionTitle = document.querySelector(`#question${key.replace('q', '')} .question-title`).textContent;
@@ -324,7 +324,7 @@
 
             const result = document.getElementById('result');
             result.innerHTML = `Acertaste ${score} de 3 preguntas.`;
-
+            /* Muestra el puntaje */
             document.getElementById('answersDetails').innerHTML = `<strong>Respuestas:</strong><br>${answersDetails}`;
             document.getElementById('quizForm').style.display = 'none';
             document.getElementById('results').style.display = 'block';
@@ -332,6 +332,3 @@
     </script>
 </body>
 </html>
-
-
-
