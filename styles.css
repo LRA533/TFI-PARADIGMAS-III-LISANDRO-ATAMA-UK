@@ -1,0 +1,232 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
+body { 
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    overflow: hidden;
+    position: relative;
+    background-color: #222;
+}
+
+.video-background-main { 
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    object-fit: cover;
+    z-index: -1;
+}
+
+.title-container, .ww2-container, #quizForm, #results { 
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 90%;
+    max-width: 700px;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.8);
+    transition: transform 0.3s ease;
+}
+
+.title-container {
+    top: 30%;
+    background-color: rgba(0, 0, 0, 0.8);
+    border: 5px solid #aaa;
+    text-align: center;
+    animation: slideIn 0.5s ease;
+}
+
+@keyframes slideIn {
+    from { transform: translate(-50%, -60%); }
+    to { transform: translate(-50%, -50%); }
+}
+
+.ww2-container {
+    top: 55%;
+    background-color: rgba(50, 50, 50, 0.85);
+    border: 5px solid #666;
+    text-align: center;
+    cursor: pointer;
+    transition: background-color 0.3s, box-shadow 0.3s; 
+    padding: 20px; 
+    border-radius: 10px; 
+}
+
+.ww2-container:hover {
+    background-color: rgba(70, 70, 70, 0.9); 
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.5); 
+}
+
+h1, h2 {
+    font-family: 'Playfair Display', serif;
+    letter-spacing: 2px;
+    margin: 0;
+    padding: 0;
+    display: inline;
+    line-height: 1;
+}
+
+h1 {
+    font-size: 6vw;
+    color: #f0e6d6;
+    text-transform: uppercase;
+    text-shadow: 2px 2px 0 #333, 4px 4px 0 #000;
+}
+
+h2 {
+    font-size: 4vw;
+    color: #ccc;
+    text-transform: uppercase;
+}
+
+.quiz-title {
+    font-size: 4vw; 
+    color: #ccc; 
+    text-transform: uppercase; 
+}
+
+.timer {
+    font-size: 1.5em;
+    color: #ff0000;
+    margin-bottom: 10px;
+}
+
+#quizForm {
+    display: none;
+    background-color: rgba(255, 255, 255, 0.9);
+    border: 3px solid #444;
+    text-align: left;
+    font-family: 'Press Start 2P', cursive;
+    animation: fadeIn 0.5s ease;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.question {
+    margin-bottom: 20px;
+    padding: 15px;
+    border: 2px solid #444;
+    border-radius: 5px;
+    background-color: #e0e0e0;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+.question:hover {
+    background-color: #d0d0d0;
+    transform: scale(1.02);
+}
+
+.question-title {
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.question-options {
+    margin-top: 10px;
+}
+
+input[type="radio"] {
+    margin-right: 10px;
+    accent-color: #333;
+}
+
+.form-buttons {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+.submit-btn, .back-to-home {
+    background-color: #333;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    border-radius: 5px;
+    font-family: 'Press Start 2P', cursive;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+.submit-btn:hover, .back-to-home:hover {
+    background-color: #222;
+    transform: scale(1.05);
+}
+
+#errorMessage {
+    display: none;
+    color: #900;
+    font-family: 'Press Start 2P', cursive;
+    margin-top: 15px;
+    font-size: 14px;
+    text-align: center;
+}
+
+.results-container {
+    display: none;
+    background-color: rgba(255, 255, 255, 0.9);
+    border: 3px solid #444;
+    text-align: left; 
+    font-family: 'Press Start 2P', cursive;
+    word-wrap: break-word; 
+    animation: fadeIn 0.5s ease;
+}
+
+.results-container p {
+    margin: 0;
+    font-size: 18px;
+    line-height: 1.6;
+}
+
+.hidden {
+    display: none;
+}
+
+.results-buttons {
+    margin-top: 20px;
+    display: flex;
+    justify-content: center; 
+}
+
+/* Media Queries para pantallas más pequeñas */
+@media (max-width: 600px) {
+    h1 {
+        font-size: 8vw;
+    }
+
+    h2 {
+        font-size: 6vw;
+    }
+
+    .form-buttons {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .submit-btn, .back-to-home {
+        width: 100%;
+        margin-bottom: 10px;
+    }
+
+    .question {
+        padding: 10px;
+    }
+
+    .question-title {
+        font-size: 16px;
+    }
+
+    .timer {
+        font-size: 1.2em;
+    }
+}
