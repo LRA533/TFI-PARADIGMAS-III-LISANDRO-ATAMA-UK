@@ -57,15 +57,17 @@ function showCurrentQuestion() {
     document.getElementById(`question${currentQuestion}`).style.display = 'block';
 }
 
-function nextQuestion() {
+function nextQuestion(event) {
     const currentAnswer = document.querySelector(`input[name=q${currentQuestion}]:checked`);
     
+    // Ocultar el mensaje de error al mostrar una nueva pregunta
+    document.getElementById('errorMessage').style.display = 'none';
+
     // Si hay respuesta seleccionada, verificar si es correcta
     if (currentAnswer) {
         if (currentAnswer.value === answers[`q${currentQuestion}`]) {
             score++;
         }
-        document.getElementById('errorMessage').style.display = 'none'; // Ocultar mensaje de error
     } else {
         // Si se presiona el botón y no hay respuesta seleccionada, mostrar mensaje de error
         if (event && event.target.classList.contains('submit-btn')) {
@@ -109,3 +111,4 @@ function checkAnswers() {
 function toggleVisibility(selector, isVisible) {
     document.querySelector(selector).style.display = isVisible ? 'block' : 'none';
 }
+
