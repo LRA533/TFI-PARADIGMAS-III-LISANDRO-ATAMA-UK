@@ -104,6 +104,7 @@ h2 {
     text-align: left;
     font-family: 'Press Start 2P', cursive;
     animation: fadeIn 0.5s ease;
+    padding: 20px; /* Añadir padding para mejorar el espaciado */
 }
 
 @keyframes fadeIn {
@@ -156,6 +157,8 @@ input[type="radio"] {
     border-radius: 5px;
     font-family: 'Press Start 2P', cursive;
     transition: background-color 0.3s, transform 0.2s;
+    flex: 1; /* Hacer que los botones ocupen el mismo espacio */
+    margin: 0 5px; /* Espaciado entre botones */
 }
 
 .submit-btn:hover, .back-to-home:hover {
@@ -180,6 +183,7 @@ input[type="radio"] {
     font-family: 'Press Start 2P', cursive;
     word-wrap: break-word; 
     animation: fadeIn 0.5s ease;
+    padding: 20px; /* Añadir padding para mejorar el espaciado */
 }
 
 .results-container p {
@@ -210,7 +214,7 @@ input[type="radio"] {
 
     .form-buttons {
         flex-direction: column;
-        align-items: center;
+        align-items: stretch; /* Cambiar a stretch para que los botones ocupen todo el ancho */
     }
 
     .submit-btn, .back-to-home {
