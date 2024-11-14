@@ -1,22 +1,37 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>HISTGAME</title>
     <link rel="stylesheet" href="css/styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/responsive-helper/dist/responsive-helper.min.js"></script>
 </head>
+
 <body>
     <video class="video-background-main" autoplay muted loop>
         <source src="videos/SGM-fondo.mp4" type="video/mp4">
         Tu navegador no soporta el video.
     </video>
+
     <header class="title-container">
         <h1 id="title">HISTGAME</h1>
     </header>
-    <section class="ww2-container" role="button" tabindex="0" onclick="showQuiz()" onkeypress="if(event.key === 'Enter') showQuiz()">
+
+    <section class="ww2-container" role="button" tabindex="0" onclick="showNameInput()" onkeypress="if(event.key === 'Enter') showNameInput()">
         <h2>Segunda Guerra Mundial</h2>
     </section>
+
+    <div id="nameInputContainer" class="hidden">
+        <h2>Ingresa tu nombre:</h2>
+        <input type="text" id="userName" placeholder="Tu nombre aquí">
+        <div class="name-input-buttons">
+            <button type="button" onclick="goBack()">Volver al inicio</button>
+            <button type="button" onclick="startQuiz()">Continuar</button>
+        </div>
+    </div>    
+
     <form id="quizForm" aria-labelledby="quizTitle" class="hidden">
         <h2 id="quizTitle" class="quiz-title">Cuestionario</h2>
         <div id="timer" class="timer">Tiempo restante: <span id="time">8</span> segundos</div>
@@ -46,12 +61,14 @@
                 <label><input type="radio" name="q3" value="c"> c) La firma del Tratado de Versalles</label><br>
             </div>
         </div>
+
         <div class="form-buttons">
             <button type="button" class="back-to-home" onclick="goBack()">Volver al inicio</button>
             <button type="button" class="submit-btn" onclick="nextQuestion(event)">Siguiente pregunta</button>
         </div>
         <p id="errorMessage" class="error-message">Por favor, seleccione una opción.</p>
     </form>
+
     <div id="results" class="results-container hidden">
         <p id="result"></p>
         <div id="answersDetails"></div>
@@ -59,6 +76,7 @@
             <button class="back-to-home" onclick="goBack()">Volver al inicio</button>
         </div>
     </div>
+
     <script src="js/scripts.js"></script>
 </body>
 </html>
