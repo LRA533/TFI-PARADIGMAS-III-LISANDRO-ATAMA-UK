@@ -21,7 +21,7 @@ body {
     z-index: -1;
 }
 
-.title-container, .ww2-container, #quizForm, #results { 
+.title-container, .ww2-container, #quizForm, #results, #nameInputContainer { 
     position: absolute;
     top: 50%;
     left: 50%;
@@ -85,20 +85,66 @@ h2 {
     text-transform: uppercase;
 }
 
-.quiz-title {
-    font-size: 4vw; 
-    color: #ccc; 
-    text-transform: uppercase; 
+#nameInputContainer {
+    display: none; /* Mantener oculto inicialmente */
+    background-color: rgba(255, 255, 255, 0.9); /* Fondo blanco con algo de transparencia */
+    border: 3px solid #444; /* Borde oscuro */
+    text-align: left; 
+    font-family: 'Press Start 2P', cursive; /* Fuente temática */
+    animation: fadeIn 0.5s ease; /* Animación de aparición */
+    padding: 20px; /* Espaciado interno */
+    position: absolute; /* Posicionamiento absoluto */
+    top: 55%; /* Ajustar para que esté en la mitad inferior */
+    left: 50%; /* Centrar horizontalmente */
+    transform: translate(-50%, -50%); /* Centrar el contenedor */
+    width: 90%; /* Ancho del contenedor */
+    max-width: 700px; /* Ancho máximo */
+    border-radius: 10px; /* Bordes redondeados */
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.8); /* Sombra para dar profundidad */
+    z-index: 10; /* Asegurarse de que esté por encima del fondo */
 }
 
-.timer {
-    font-size: 1.5em;
-    color: #ff0000;
-    margin-bottom: 10px;
+#nameInputContainer h2 {
+    color: #333; /* Color del texto del encabezado */
+    text-align: center; /* Centrar el texto */
+}
+
+#nameInputContainer input[type="text"] {
+    width: 100%; /* Ancho completo */
+    padding: 10px; /* Espaciado interno */
+    margin-top: 10px; /* Margen superior */
+    border: 2px solid #444; /* Borde oscuro */
+    border-radius: 5px; /* Bordes redondeados */
+    font-family: 'Press Start 2P', cursive; /* Fuente temática */
+}
+
+#nameInputContainer .name-input-buttons {
+    display: flex;
+    justify-content: space-between; /* Espacio entre los botones */
+    margin-top: 20px; /* Espacio superior */
+}
+
+.name-input-buttons button {
+    flex: 1; /* Hacer que los botones ocupen el mismo espacio */
+    margin: 0 5px; /* Espaciado entre botones */
+    background-color: #333; /* Color de fondo del botón */
+    color: white; /* Color del texto del botón */
+    padding: 10px 20px; /* Espaciado interno del botón */
+    border: none; /* Sin borde */
+    cursor: pointer; /* Cambiar cursor al pasar por encima */
+    font-size: 16px; /* Tamaño de fuente */
+    border-radius: 5px; /* Bordes redondeados */
+    font-family: 'Press Start 2P', cursive; /* Fuente temática */
+    transition: background-color 0.3s, transform 0.2s; /* Transiciones suaves */
+}
+
+#nameInputContainer .name-input-buttons button:hover {
+    background-color: #222; /* Color de fondo al pasar el mouse */
+    transform: scale(1.05); /* Efecto de aumento al pasar el mouse */
 }
 
 #quizForm {
-    display: none;
+    display: none; /* Mantener oculto inicialmente */
     background-color: rgba(255, 255, 255, 0.9);
     border: 3px solid #444;
     text-align: left;
@@ -107,9 +153,10 @@ h2 {
     padding: 20px; /* Añadir padding para mejorar el espaciado */
 }
 
-@keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
+.timer {
+    font-size: 1.5em;
+    color: #ff0000;
+    margin-bottom: 10px;
 }
 
 .question {
@@ -205,32 +252,32 @@ input[type="radio"] {
 /* Media Queries para pantallas más pequeñas */
 @media (max-width: 600px) {
     h1 {
-        font-size: 8vw;
+        font-size: 8vw; /* Ajustar tamaño de fuente para h1 */
     }
 
     h2 {
-        font-size: 6vw;
+        font-size: 6vw; /* Ajustar tamaño de fuente para h2 */
     }
 
     .form-buttons {
-        flex-direction: column;
+        flex-direction: column; /* Cambiar a columna en pantallas pequeñas */
         align-items: stretch; /* Cambiar a stretch para que los botones ocupen todo el ancho */
     }
 
     .submit-btn, .back-to-home {
-        width: 100%;
-        margin-bottom: 10px;
+        width: 100%; /* Hacer que los botones ocupen el ancho completo */
+        margin-bottom: 10px; /* Margen inferior entre botones */
     }
 
     .question {
-        padding: 10px;
+        padding: 10px; /* Ajustar espaciado interno de las preguntas */
     }
 
     .question-title {
-        font-size: 16px;
+        font-size: 16px; /* Ajustar tamaño de fuente para el título de la pregunta */
     }
 
     .timer {
-        font-size: 1.2em;
+        font-size: 1.2em; /* Ajustar tamaño de fuente para el temporizador */
     }
 }
