@@ -6,14 +6,23 @@ const answers = {
     q3: 'b'
 };
 let timer;
-let timeLeft = 8; // Cambiado a 8 segundos
+let timeLeft = 10; // Tiempo en segundos para cada pregunta
 
-function showQuiz() {
+function showNameInput() {
+    toggleVisibility('#nameInputContainer', true);
+}
+
+function startQuiz() {
+    const userName = document.getElementById('userName').value;
+    if (userName.trim() === '') {
+        alert('Por favor, ingresa tu nombre.');
+        return;
+    }
     toggleVisibility('.title-container', false);
     toggleVisibility('.ww2-container', false);
+    toggleVisibility('#nameInputContainer', false);
     toggleVisibility('#quizForm', true);
-    toggleVisibility('#results', false);
-    resetTimer(); // Reiniciar el temporizador al mostrar el cuestionario
+    resetTimer();
     showCurrentQuestion();
     startTimer();
 }
@@ -23,31 +32,34 @@ function goBack() {
     toggleVisibility('.ww2-container', true);
     toggleVisibility('#quizForm', false);
     toggleVisibility('#results', false);
+    toggleVisibility('#nameInputContainer', false);
     resetQuiz();
+    
+    document.getElementById('userName').value = '';
 }
 
 function resetQuiz() {
     currentQuestion = 1;
     score = 0;
-    resetTimer(); // Reiniciar el temporizador
+    resetTimer();
     document.querySelectorAll('input[type="radio"]').forEach(input => input.checked = false);
     clearInterval(timer);
-    document.getElementById('errorMessage').style.display = 'none'; // Ocultar mensaje de error
+    document.getElementById('errorMessage').style.display = 'none';
 }
 
 function resetTimer() {
-    timeLeft = 8; // Cambiado a 8 segundos
+    timeLeft = 10; 
     document.getElementById('time').textContent = timeLeft;
 }
 
 function startTimer() {
-    clearInterval(timer); // Asegurarse de que no haya múltiples temporizadores
+    clearInterval(timer);
     timer = setInterval(() => {
         timeLeft--;
         document.getElementById('time').textContent = timeLeft;
         if (timeLeft <= 0) {
             clearInterval(timer);
-            nextQuestion(); // Avanzar a la siguiente pregunta cuando se agota el tiempo
+            nextQuestion();
         }
     }, 1000);
 }
@@ -59,20 +71,16 @@ function showCurrentQuestion() {
 
 function nextQuestion(event) {
     const currentAnswer = document.querySelector(`input[name=q${currentQuestion}]:checked`);
-    
-    // Ocultar el mensaje de error al mostrar una nueva pregunta
     document.getElementById('errorMessage').style.display = 'none';
 
-    // Si hay respuesta seleccionada, verificar si es correcta
     if (currentAnswer) {
         if (currentAnswer.value === answers[`q${currentQuestion}`]) {
             score++;
         }
     } else {
-        // Si se presiona el botón y no hay respuesta seleccionada, mostrar mensaje de error
         if (event && event.target.classList.contains('submit-btn')) {
-            document.getElementById('errorMessage').style.display = 'block'; // Mostrar mensaje de error
-            return; // Salir de la función para no avanzar a la siguiente pregunta
+            document.getElementById('errorMessage').style.display = 'block';
+            return;
         }
     }
 
@@ -81,29 +89,52 @@ function nextQuestion(event) {
         clearInterval(timer);
         checkAnswers();
     } else {
-        resetTimer(); // Reiniciar el temporizador para la siguiente pregunta
+        resetTimer();
         showCurrentQuestion();
-        startTimer(); // Iniciar el temporizador
+        startTimer();
     }
 }
 
 function checkAnswers() {
-    let answersDetails = '';
+    let answersDetails = [];
     for (let [key, value] of Object.entries(answers)) {
         const selected = document.querySelector(`input[name=${key}]:checked`);
         const questionTitle = document.querySelector(`#question${key.replace('q', '')} .question-title`).textContent;
-        const selectedOption = selected ? selected.value : 'No seleccionada';
+        const selectedOption = selected ? selected.value : 'no seleccionada';
         const correctOption = value;
-
-        const options = document.querySelectorAll(`#question${key.replace('q', '')} .question-options label`);
-        const optionsText = Array.from(options).map(option => option.textContent.trim()).join('<br>');
-
-        answersDetails += `<strong>Pregunta ${key.replace('q', '')}:</strong><br>${questionTitle}<br>${optionsText}<br>Opción seleccionada: ${selectedOption}<br>Opción correcta: ${correctOption}<br><br>`;
+        
+        // Definir las opciones para cada pregunta
+        let opcionesDisponibles = '';
+        if (key === 'q1') {
+            opcionesDisponibles = 'a: 1939<br>b: 1941<br>c: 1945';
+        } else if (key === 'q2') {
+            opcionesDisponibles = 'a: Francia<br>b: Alemania<br>c: Italia';
+        } else if (key === 'q3') {
+            opcionesDisponibles = 'a: La invasión de Polonia<br>b: El ataque a Pearl Harbor<br>c: La firma del Tratado de Versalles';
+        }
+        
+        answersDetails.push({
+            pregunta: questionTitle,
+            opciones: `Opciones disponibles:<br>${opcionesDisponibles}`,
+            respuesta_seleccionada: `Opción seleccionada: ${selectedOption === 'no seleccionada' ? 'no seleccionada' : selectedOption}`,
+            respuesta_correcta: `Opción correcta: ${correctOption}`,
+        });
     }
 
+    const userName = document.getElementById('userName').value;
+    saveResults(userName, answersDetails);
+
+    // Mostrar el resultado final
     const result = document.getElementById('result');
     result.innerHTML = `Acertaste ${score} de 3 preguntas.`;
-    document.getElementById('answersDetails').innerHTML = `<strong>Respuestas:</strong><br>${answersDetails}`;
+    document.getElementById('answersDetails').innerHTML = `<strong>Respuestas:</strong><br>${answersDetails.map(answer => 
+        `<strong>Pregunta:</strong> ${answer.pregunta}<br>
+        ${answer.opciones}<br>
+        ${answer.respuesta_seleccionada}<br>
+        ${answer.respuesta_correcta}<br><br>`
+    ).join('')}`;
+
+    // Ocultar el formulario del cuestionario y mostrar los resultados
     toggleVisibility('#quizForm', false);
     toggleVisibility('#results', true);
 }
@@ -112,3 +143,22 @@ function toggleVisibility(selector, isVisible) {
     document.querySelector(selector).style.display = isVisible ? 'block' : 'none';
 }
 
+function saveResults(userName, answersDetails) {
+    fetch('/ruta/a/tu/archivo.php', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            nombre: userName,
+            respuestas: answersDetails
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log('Success:', data);
+    })
+    .catch((error) => {
+        console.error('Error:', error);
+    });
+}
